@@ -1,0 +1,70 @@
+<div class="container first-step-container">
+
+    <table>
+        <tr>
+            <th>/</th>
+            <th *ngFor="let criterion of criterions">
+                {{ criterion.name }}
+            </th>
+        </tr>
+        <tr *ngFor="let criterionLine of criterions">
+            <td>
+                {{ criterionLine.name }}
+            </td>
+            <td class="first-step-container__item-option-td-radio" *ngFor="let criterionColumn of criterions">
+                <div class="radiobtn-container">
+                    <div class="radiobtn">
+                        <input
+                            type="radio"
+                            [id]="criterionLine.id.toString() + criterionColumn.id.toString() + 'min'"
+                            [name]="criterionLine.id.toString() + criterionColumn.id.toString() + 'radio'"
+                            [checked]="getRelationValue(criterionLine, criterionColumn) === 0"
+                            (change)="setRelationsValue(+$event.target.value, criterionLine, criterionColumn)"
+                            [value]="0"
+                        />
+                        <label class="radiobtn__label" [for]="criterionLine.id.toString() + criterionColumn.id.toString() + 'min'">
+                            <span class="radiobtn__indicator"></span>0
+                        </label>
+                    </div>
+                    <div class="radiobtn">
+                        <input
+                            type="radio"
+                            [id]="criterionLine.id.toString() + criterionColumn.id.toString() + 'middle'"
+                            [name]="criterionLine.id.toString() + criterionColumn.id.toString() + 'radio'"
+                            [checked]="getRelationValue(criterionLine, criterionColumn) === 1"
+                            (change)="setRelationsValue(+$event.target.value, criterionLine, criterionColumn)"
+                            [value]="1"
+                        />
+                        <label class="radiobtn__label" [for]="criterionLine.id.toString() + criterionColumn.id.toString() + 'middle'">
+                            <span class="radiobtn__indicator"></span>1
+                        </label>
+                    </div>
+                    <div class="radiobtn">
+                        <input
+                            type="radio"
+                            [id]="criterionLine.id.toString() + criterionColumn.id.toString() + 'max'"
+                            [name]="criterionLine.id.toString() + criterionColumn.id.toString() + 'radio'"
+                            [checked]="getRelationValue(criterionLine, criterionColumn) === 2"
+                            (change)="setRelationsValue(+$event.target.value, criterionLine, criterionColumn)"
+                            [value]="2"
+                        />
+                        <label class="radiobtn__label" [for]="criterionLine.id.toString() + criterionColumn.id.toString() + 'max'">
+                            <span class="radiobtn__indicator"></span>2
+                        </label>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    <div class="error-block" *ngIf="!isTableValid">
+        Необходимо заполнить всю таблицу
+    </div>
+
+    <button
+        (click)="goNextStep()"
+    >
+        Перейти дальше
+    </button>
+
+</div>

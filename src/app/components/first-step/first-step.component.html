@@ -1,0 +1,102 @@
+<div class="container first-step-container">
+
+    <div class="first-step-container__default-block">
+        <div class="first-step-container__default-block-title">Альтернативы</div>
+
+        <form class="first-step-container__alternatives-add-form" [formGroup]="addAlternativesForm" (ngSubmit)="addAlternative()">
+            <input
+                class="first-step-container__default-input"
+                type="text"
+                autocomplete="off"
+                formControlName="name"
+            >
+            <button
+                class="first-step-container__alternative-add-btn"
+                type="submit"
+            >
+                Добавить
+            </button>
+        </form>
+
+        <div class="first-step-container__default-list-item" *ngFor="let alternative of alternatives; let i = index">
+            {{ i + 1 }}. {{ alternative.name }}
+
+            <fa-icon
+                class="first-step-container__alternatives-list-item-delete-btn"
+                [icon]="faTimesCircle"
+                (click)="deleteAlternative(alternative.id)"
+            ></fa-icon>
+        </div>
+
+        <div class="error-block" *ngIf="!alternativesValid">
+            Минимальное количество альтернатив: {{ alternativesMinCount }}
+        </div>
+    </div>
+
+    <div class="first-step-container__default-block">
+        <div class="first-step-container__default-block-title">Критерии</div>
+
+        <table class="first-step-container__criterions-list-table">
+            <tr>
+                <th>Название</th>
+                <th>включён/выключен</th>
+                <th>макс/мин</th>
+                <th>вес (0 - 10)</th>
+            </tr>
+            <tr *ngFor="let criterion of criterions; let i = index">
+                <td class="first-step-container__item-option-td-name">
+                    {{ i + 1 }}. {{ criterion.name }}
+                </td>
+                <td class="first-step-container__item-option-td-checkbox">
+                    <div class="checkbox">
+                        <input type="checkbox" [id]="criterion.id + 'active'" [(ngModel)]="criterion.active"/>
+                        <label class="checkbox__label" [for]="criterion.id + 'active'">
+                            <span class="checkbox__indicator"></span>
+                        </label>
+                    </div>
+                </td>
+                <td class="first-step-container__item-option-td-radio">
+                    <div class="radiobtn-container">
+                        <div class="radiobtn">
+                            <input type="radio" [id]="criterion.id + 'stateMin'" [name]="criterion.id + 'radio'" [(ngModel)]="criterion.state" [value]="criterionState.Min"/>
+                            <label class="radiobtn__label" [for]="criterion.id + 'stateMin'">
+                                <span class="radiobtn__indicator"></span>Min
+                            </label>
+                        </div>
+                        <div class="radiobtn">
+                            <input type="radio" [id]="criterion.id + 'stateMax'" [name]="criterion.id + 'radio'" [(ngModel)]="criterion.state" [value]="criterionState.Max"/>
+                            <label class="radiobtn__label" [for]="criterion.id + 'stateMax'">
+                                <span class="radiobtn__indicator"></span>Max
+                            </label>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <input
+                        class="first-step-container__default-input"
+                        type="text"
+                        autocomplete="off"
+                        [(ngModel)]="criterion.weight"
+                    >
+                </td>
+            </tr>
+        </table>
+
+        <div class="error-block" *ngIf="!criterionsValid">
+            Минимальное количество выбранных критериев: {{ criterionsMinCount }}<br>
+            Необходимо заполнить поля выбранных критериев (макс/мин, вес).<br>
+            Для использования специального метода значения весов заполнять не нужно
+        </div>
+    </div>
+
+    <div>
+        Вместо ввода весов вы можете использовать <a [routerLink]="['/spec-method']">специальный метод</a>
+    </div>
+
+    <button
+        (click)="goNextStep()"
+    >
+        Перейти к заполнению таблицы значений
+    </button>
+
+</div>

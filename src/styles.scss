@@ -1,1 +1,38 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+@import '../src/assets/styles/variables';
+@import '../src/assets/styles/mixins';
+@import '../src/assets/styles/blocks/checkbox';
+@import '../src/assets/styles/blocks/radiobtn.scss';
+
+html, body {
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+    background-color: #edeef0;
+    height: 100vh;
+    width: 100vw;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+.container {
+    height: 100vh;
+    width: 100vw;
+    padding: 1rem;
+}
+
+.error-block {
+    font-size: 0.8rem;
+    width: 100%;
+    text-align: left;
+    color: #bf0000;
+    margin: 0.5rem 0;
+    font-weight: bold;
+}
