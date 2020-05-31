@@ -302,9 +302,47 @@ export class SecondStepComponent implements OnInit {
       });
     });
 
-    console.log(sRightSideValues);
-    console.log(sSumByLine);
-    console.log(sRightSideValuesMaxs);
+    // Определение агрегированного значения для каждой альтернативы
+    const v = 0.5;
+
+    const sSumByLineMin = Math.min(...sSumByLine.map(x => x.value));
+    const sSumByLineMax = Math.max(...sSumByLine.map(x => x.value));
+
+    const sRightSideValuesMaxsMin = Math.min(...sRightSideValuesMaxs.map(x => x.value));
+    const sRightSideValuesMaxsMax = Math.max(...sRightSideValuesMaxs.map(x => x.value));
+
+    const qValues: IdValue[] = [];
+    sSumByLine.forEach((x, index) => {
+      const valueS = v * ((x.value - sSumByLineMin) / (sSumByLineMax - sSumByLineMin));
+      // tslint:disable-next-line:max-line-length
+      const valueR = (1 - v) * ((sRightSideValuesMaxs[index].value - sRightSideValuesMaxsMin) / (sRightSideValuesMaxsMax - sRightSideValuesMaxsMin));
+      const qValue = valueS + valueR;
+      qValues.push({
+        alternativeId: x.alternativeId,
+        value: qValue
+      });
+    });
+
+    // Ранжирование альтернатив
+    const sSumByLineSorted = sSumByLine.sort((a, b) => a.value - b.value);
+    const sRightSideValuesMaxsSorted = sRightSideValuesMaxs.sort((a, b) => a.value - b.value);
+    const qValuesSorted = qValues.sort((a, b) => a.value - b.value);
+
+    // Определение компромиссного решения
+    const dQ = 1 / (alternativesCount - 1);
+    const qxDivided = qValuesSorted[1].value - qValuesSorted[0].value;
+    const isDecisionStable1 = qxDivided >= dQ;
+
+    // Условие приемлемой стабильности
+    const isDecisionStable2 =
+      sSumByLineSorted[0].alternativeId === sRightSideValuesMaxsSorted[0].alternativeId &&
+      sSumByLineSorted[0].alternativeId === qValuesSorted[0].alternativeId;
+
+    console.log(sSumByLineSorted);
+    console.log(sRightSideValuesMaxsSorted);
+    console.log(qValuesSorted);
+    console.log(isDecisionStable1);
+    console.log(isDecisionStable2);
   }
 
 }
