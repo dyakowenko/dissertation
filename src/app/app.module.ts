@@ -7,11 +7,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { NotifierModule } from 'angular-notifier';
+import { NgxMaskModule } from 'ngx-mask';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { FirstStepComponent } from './components/first-step/first-step.component';
 import { SpecMethodComponent } from './components/spec-method/spec-method.component';
+import { SecondStepComponent } from './components/second-step/second-step.component';
 
 const FIREBASE_CONFIG = {
   apiKey: 'AIzaSyBDsxJCI_m6ph8ZpR0HSEoOtgJRhLBiBNw',
@@ -28,7 +31,8 @@ const FIREBASE_CONFIG = {
     AppComponent,
     FirstStepComponent,
     HomeComponent,
-    SpecMethodComponent
+    SpecMethodComponent,
+    SecondStepComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +42,28 @@ const FIREBASE_CONFIG = {
     ReactiveFormsModule,
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     AngularFireDatabaseModule,
-    FontAwesomeModule
+    FontAwesomeModule,
+    NgxMaskModule.forRoot(),
+    NotifierModule.withConfig({
+      position: {
+        horizontal: {
+          position: 'right',
+          distance: 12
+        },
+        vertical: {
+          position: 'top',
+          distance: 12,
+          gap: 10
+        }
+      },
+      behaviour: {
+        autoHide: 25000,
+        onClick: 'hide',
+        onMouseover: 'pauseAutoHide',
+        showDismissButton: true,
+        stacking: 3
+      }
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

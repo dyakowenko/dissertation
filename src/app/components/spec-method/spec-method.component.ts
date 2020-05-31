@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Criterion } from 'src/app/shared/models/criterion.model';
 import { DataStoreService } from 'src/app/core/services/data-store.service';
+import { NotifierService } from 'angular-notifier';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-spec-method',
@@ -9,10 +11,10 @@ import { DataStoreService } from 'src/app/core/services/data-store.service';
 })
 export class SpecMethodComponent implements OnInit {
 
-  isTableValid = true;
-
   constructor(
-    private dataStoreService: DataStoreService
+    private dataStoreService: DataStoreService,
+    private notifierService: NotifierService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -20,42 +22,63 @@ export class SpecMethodComponent implements OnInit {
   }
 
   get criterions(): Criterion[] {
-    return this.dataStoreService.criterions;
+    return this.dataStoreService.criterions.filter(x => x.active);
   }
 
   initRelationsObjects() {
     this.dataStoreService.criterions.forEach(criterion1 => {
-      criterion1.relations = [];
-      this.dataStoreService.criterions.forEach(criterion2 => {
-        criterion1.relations.push({
-          id: criterion2.id
-        });
+      if (!criterion1.relations) {
+        criterion1.relations = [];
+      }
+      this.criterions.forEach(criterion2 => {
+        if (!criterion1.relations.some(relation => relation.id === criterion2.id)) {
+          criterion1.relations.push({
+            id: criterion2.id,
+            value: criterion1.id === criterion2.id ? 1 : undefined
+          });
+        }
       });
     });
   }
 
-  setRelationsValue(value: number, criterionLine: Criterion, criterionColumn: Criterion) {
-    this.setRelationValue(value, criterionLine, criterionColumn);
-    this.setRelationValue(value, criterionColumn, criterionLine);
-    console.log(this.criterions);
-  }
+  setRelationsValue(event: any, criterionLine: Criterion, criterionColumn: Criterion) {
+    const relationLine = criterionLine.relations.find(x => x.id === criterionColumn.id);
+    if (criterionLine.id === criterionColumn.id) {
+      event.preventDefault();
+    } else {
+      relationLine.value = +event.target.value;
+    }
 
-  setRelationValue(value: number, criterion1: Criterion, criterion2: Criterion) {
-    const relation = criterion1.relations.find(x => x.id === criterion2.id);
-    if (relation) {
-      relation.value = value;
+    const relationColumn = criterionColumn.relations.find(x => x.id === criterionLine.id);
+    if (relationLine.value === 1) {
+      relationColumn.value = 1;
+    } else if (relationLine.value === 2) {
+      relationColumn.value = 0;
+    } else {
+      relationColumn.value = 2;
     }
   }
 
   getRelationValue(criterionLine: Criterion, criterionColumn: Criterion) {
-    return criterionLine.relations.find(criterion1 => criterion1.id === criterionColumn.id).value;
+    return criterionLine.relations.find(relation => relation.id === criterionColumn.id).value;
   }
 
   goNextStep() {
-    this.isTableValid = !this.criterions.some(x => x.relations.some(y => y.value === undefined));
-    if (this.isTableValid) {
-      alert('valid');
+    const isTableValid = !this.criterions.some(x => x.relations.some(y => y.value === undefined));
+    if (!isTableValid) {
+      this.notifierService.notify('warning', `
+        Необходимо сделать выбор в каждом из полей
+      `);
+      return;
     }
+
+    const allRelationsSum = this.criterions.reduce((total, criterion) =>
+      total + criterion.relations.reduce((sum, relation) => sum + relation.value, 0), 0);
+
+    this.criterions.forEach(x => {
+      x.weight = x.relations.reduce((sum, relation) => sum + relation.value, 0) / allRelationsSum;
+    });
+    this.router.navigate(['/fill']);
   }
 
 }

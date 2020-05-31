@@ -27,10 +27,6 @@
                 (click)="deleteAlternative(alternative.id)"
             ></fa-icon>
         </div>
-
-        <div class="error-block" *ngIf="!alternativesValid">
-            Минимальное количество альтернатив: {{ alternativesMinCount }}
-        </div>
     </div>
 
     <div class="first-step-container__default-block">
@@ -74,19 +70,13 @@
                 <td>
                     <input
                         class="first-step-container__default-input"
-                        type="text"
+                        type="number"
                         autocomplete="off"
                         [(ngModel)]="criterion.weight"
                     >
                 </td>
             </tr>
         </table>
-
-        <div class="error-block" *ngIf="!criterionsValid">
-            Минимальное количество выбранных критериев: {{ criterionsMinCount }}<br>
-            Необходимо заполнить поля выбранных критериев (макс/мин, вес).<br>
-            Для использования специального метода значения весов заполнять не нужно
-        </div>
     </div>
 
     <div>

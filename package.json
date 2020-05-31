@@ -23,7 +23,9 @@
     "@fortawesome/angular-fontawesome": "^0.5.0",
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
     "@fortawesome/free-solid-svg-icons": "^5.13.0",
+    "angular-notifier": "^6.0.1",
     "firebase": "^7.14.6",
+    "ngx-mask": "^9.1.2",
     "rxjs": "~6.4.0",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"

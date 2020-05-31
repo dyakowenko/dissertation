@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import '../node_modules/angular-notifier/styles.scss';
 
 @import '../src/assets/styles/variables';
 @import '../src/assets/styles/mixins';
@@ -20,6 +21,23 @@ body {
 
 *, *:before, *:after {
     box-sizing: inherit;
+}
+
+notifier-container {
+    width: 0 !important;
+    height: 0 !important;
+}
+
+notifier-notification {
+    display: flex !important;
+    align-items: center !important;
+}
+
+.notifier__notification-message {
+    font-size: 0.8rem !important;
+    letter-spacing: 0.8px !important;
+    line-height: 1.1rem !important;
+    max-width: 300px !important;
 }
 
 .container {

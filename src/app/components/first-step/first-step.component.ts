@@ -5,6 +5,7 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { Criterion } from 'src/app/shared/models/criterion.model';
 import { CriterionState } from 'src/app/shared/enums/criterion-state.enum';
 import { DataStoreService } from 'src/app/core/services/data-store.service';
+import { NotifierService } from 'angular-notifier';
 import { Router } from '@angular/router';
 
 @Component({
@@ -18,11 +19,10 @@ export class FirstStepComponent implements OnInit {
   addAlternativesForm: FormGroup;
 
   faTimesCircle = faTimesCircle;
-  alternativesValid = true;
-  criterionsValid = true;
 
   constructor(
     private dataStoreService: DataStoreService,
+    private notifierService: NotifierService,
     private router: Router
   ) { }
 
@@ -38,7 +38,7 @@ export class FirstStepComponent implements OnInit {
     });
   }
 
-  get alternatives(): Criterion[] {
+  get alternatives(): Alternative[] {
     return this.dataStoreService.alternatives;
   }
 
@@ -69,32 +69,45 @@ export class FirstStepComponent implements OnInit {
       this.alternatives.push(alternative);
 
       this.addAlternativesForm.reset();
-      this.updateValidState();
     }
   }
 
   deleteAlternative(alternativeId: number) {
     this.dataStoreService.alternatives = this.alternatives.filter(x => x.id !== alternativeId);
-    this.updateValidState();
   }
 
   goNextStep() {
-    this.updateValidState();
-
-    if (this.alternativesValid && this.criterionsValid) {
-      alert('qwerty');
+    if (this.checkValid()) {
+      this.router.navigate(['/fill']);
     }
   }
 
-  updateValidState() {
-    this.alternativesValid = this.alternatives.length >= this.alternativesMinCount;
-    this.criterionsValid = this.criterions.filter(x =>
+  checkValid(): boolean {
+    const alternativesValid = this.alternatives.length >= this.alternativesMinCount;
+    const criterionsValid = this.criterions.filter(x =>
       x.active &&
       x.state !== undefined &&
       x.weight !== undefined &&
       x.weight >= 0 &&
       x.weight <= 10
     ).length >= this.criterionsMinCount;
+
+    if (!criterionsValid) {
+      this.notifierService.notify('info', `
+        Для использования специального метода значения весов критериев заполнять не нужно
+      `);
+      this.notifierService.notify('warning', `
+        Минимальное количество выбранных критериев: ${this.criterionsMinCount}.
+        Для продолжения необходимо заполнить поля выбранных критериев (макс/мин, вес)
+      `);
+    }
+    if (!alternativesValid) {
+      this.notifierService.notify('warning', `
+        Минимальное количество альтернатив: ${this.alternativesMinCount}
+      `);
+    }
+
+    return alternativesValid && criterionsValid;
   }
 
 }

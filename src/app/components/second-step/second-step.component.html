@@ -1,0 +1,30 @@
+<div class="container">
+
+    <table>
+        <tr>
+            <th>/</th>
+            <th *ngFor="let criterion of criterions">
+                {{ criterion.name }}
+            </th>
+        </tr>
+        <tr *ngFor="let alternative of alternatives">
+            <td>
+                {{ alternative.name }}
+            </td>
+            <td class="first-step-container__item-option-td-radio" *ngFor="let criterion of criterions">
+                <input
+                    type="number"
+                    autocomplete="off"
+                    (input)="setRelationValue($event.target.value, alternative, criterion)"
+                >
+            </td>
+        </tr>
+    </table>
+
+    <button
+        (click)="goNextStep()"
+    >
+        Вычислить
+    </button>
+
+</div>
