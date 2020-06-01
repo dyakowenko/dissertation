@@ -5,17 +5,14 @@
 
         <form class="first-step-container__alternatives-add-form" [formGroup]="addAlternativesForm" (ngSubmit)="addAlternative()">
             <input
-                class="first-step-container__default-input"
                 type="text"
                 autocomplete="off"
                 formControlName="name"
+                placeholder="Введите название альтернативы"
             >
-            <button
-                class="first-step-container__alternative-add-btn"
-                type="submit"
-            >
-                Добавить
-            </button>
+            <div class="default-button" type="submit" (click)="addAlternative()">
+                <span>Добавить</span>
+            </div>
         </form>
 
         <div class="first-step-container__default-list-item" *ngFor="let alternative of alternatives; let i = index">
@@ -68,25 +65,37 @@
                     </div>
                 </td>
                 <td>
-                    <input
-                        class="first-step-container__default-input"
-                        type="number"
-                        autocomplete="off"
-                        [(ngModel)]="criterion.weight"
-                    >
+                    <div class="td-container">
+                        <input
+                            class="table-input"
+                            type="number"
+                            autocomplete="off"
+                            [(ngModel)]="criterion.weight"
+                        >
+                    </div>
                 </td>
             </tr>
         </table>
+    </div>
+
+    <div class="first-step-container__default-block">
+        <input
+            type="number"
+            autocomplete="off"
+            (input)="setVicorV(+$event.target.value)"
+            placeholder="v для викора"
+        >
     </div>
 
     <div>
         Вместо ввода весов вы можете использовать <a [routerLink]="['/spec-method']">специальный метод</a>
     </div>
 
-    <button
+    <div
+        class="default-button"
         (click)="goNextStep()"
     >
-        Перейти к заполнению таблицы значений
-    </button>
+        <span>Перейти к заполнению таблицы значений</span>
+    </div>
 
 </div>

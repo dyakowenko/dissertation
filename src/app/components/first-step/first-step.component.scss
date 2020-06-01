@@ -1,5 +1,9 @@
 .first-step-container {
     &__default-block {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
         width: 500px;
         background: white;
         border-radius: 10px;
@@ -16,16 +20,6 @@
 
     &__alternatives-add-form {
         display: flex;
-    }
-
-    &__default-input {
-        width: 70%;
-    }
-
-    &__alternative-add-btn {
-        text-align: center;
-        font-weight: bold;
-        width: 30%;
     }
 
     &__criterions-list-table {

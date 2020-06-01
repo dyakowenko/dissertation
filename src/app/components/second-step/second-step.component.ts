@@ -303,8 +303,6 @@ export class SecondStepComponent implements OnInit {
     });
 
     // Определение агрегированного значения для каждой альтернативы
-    const v = 0.5;
-
     const sSumByLineMin = Math.min(...sSumByLine.map(x => x.value));
     const sSumByLineMax = Math.max(...sSumByLine.map(x => x.value));
 
@@ -313,9 +311,9 @@ export class SecondStepComponent implements OnInit {
 
     const qValues: IdValue[] = [];
     sSumByLine.forEach((x, index) => {
-      const valueS = v * ((x.value - sSumByLineMin) / (sSumByLineMax - sSumByLineMin));
+      const valueS = this.dataStoreService.vicorV * ((x.value - sSumByLineMin) / (sSumByLineMax - sSumByLineMin));
       // tslint:disable-next-line:max-line-length
-      const valueR = (1 - v) * ((sRightSideValuesMaxs[index].value - sRightSideValuesMaxsMin) / (sRightSideValuesMaxsMax - sRightSideValuesMaxsMin));
+      const valueR = (1 - this.dataStoreService.vicorV) * ((sRightSideValuesMaxs[index].value - sRightSideValuesMaxsMin) / (sRightSideValuesMaxsMax - sRightSideValuesMaxsMin));
       const qValue = valueS + valueR;
       qValues.push({
         alternativeId: x.alternativeId,

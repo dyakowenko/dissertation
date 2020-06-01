@@ -6,7 +6,6 @@ input[type="checkbox"] {
     
         display: inline-block;
         margin-bottom: 0;
-        padding-left: 40px;
     
         font-weight: 400;
         font-size: 13px;
@@ -61,14 +60,9 @@ input[type="checkbox"] {
 } 
   
 .checkbox__indicator {
-    position: absolute;
-    top: 4px;
-    left: 0;
-
     flex-shrink: 0;
     display: block;
     box-sizing: border-box;
-    margin-right: 7px;
     width: 24px;
     height: 24px;
 

@@ -1,10 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Montserrat&display=swap");
 @import '../node_modules/angular-notifier/styles.scss';
 
 @import '../src/assets/styles/variables';
 @import '../src/assets/styles/mixins';
 @import '../src/assets/styles/blocks/checkbox';
 @import '../src/assets/styles/blocks/radiobtn.scss';
+
+$color: #4ad270;
 
 html, body {
     font-family: 'Roboto', sans-serif;
@@ -14,7 +17,8 @@ body {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    background-color: #edeef0;
+    background-color: #f3f3f3;
+    color: #353535;
     height: 100vh;
     width: 100vw;
 }
@@ -44,6 +48,9 @@ notifier-notification {
     height: 100vh;
     width: 100vw;
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .error-block {
@@ -53,4 +60,87 @@ notifier-notification {
     color: #bf0000;
     margin: 0.5rem 0;
     font-weight: bold;
+}
+
+input::-webkit-input-placeholder {
+    font-family: 'roboto', sans-serif;
+    transition: all 0.3s ease-in-out;
+}
+
+input {
+    width: 100%;
+    padding-top: 1rem;
+    display: block;
+    border: none;
+    border-bottom: solid 1px $color;
+    transition: all 0.3s cubic-bezier(.64,.09,.08,1);
+    background: linear-gradient(to bottom, rgba(255,255,255,0) 96%, $color 4%);
+    background-position: -500px 0;
+    background-size: 500px 100%;
+    background-repeat: no-repeat;
+    &:focus {
+        box-shadow: none;
+        outline: none;
+        background-position: 0 0;
+        &::-webkit-input-placeholder {
+            color: $color;
+            font-size: 11px;
+            transform: translateY(-20px);
+            visibility: visible !important;
+        }
+    }
+}
+
+.default-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: max-content;
+    margin: 0.5rem 0 0;
+    height: 35px;
+    background: $color;
+    position: relative;
+    border-radius: 30px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.1s ease-in-out;
+    span {
+        padding: 0 2.5rem;
+        font-size: 12px;
+        font-weight: bold;
+        font-family: "Montserrat", sans-serif;
+        letter-spacing: 0.7px;
+        white-space: nowrap;
+    }
+
+    box-shadow: -6px -6px 10px rgba(255, 255, 255, 0.8),
+                6px 6px 10px rgba(0, 0, 0, 0.2);
+    color: white;
+    &:hover {
+        box-shadow: none;
+    }
+    &:active {
+        opacity: 1;
+        box-shadow: inset -4px -4px 8px rgba(255, 255, 255, 0.5),
+        inset 8px 8px 16px rgba(0, 0, 0, 0.1);
+    }
+}
+
+form {
+    width: 100%;
+}
+
+td {
+    display: table-cell;
+}
+
+.td-container {
+    width: 100px;
+    display: flex;
+    overflow: hidden;
+    height: 24px;
+}
+
+.table-input {
+    padding: 0;
 }

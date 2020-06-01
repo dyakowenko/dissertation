@@ -54,6 +54,10 @@ export class FirstStepComponent implements OnInit {
     return this.dataStoreService.criterionsMinCount;
   }
 
+  setVicorV(value: number) {
+    this.dataStoreService.vicorV = value;
+  }
+
   addAlternative() {
     const alternativeName = this.addAlternativesForm.get('name').value as string;
     if (this.addAlternativesForm.valid && alternativeName.trim()) {
@@ -91,6 +95,7 @@ export class FirstStepComponent implements OnInit {
       x.weight >= 0 &&
       x.weight <= 10
     ).length >= this.criterionsMinCount;
+    const vicorVIsValid = this.dataStoreService.vicorV !== undefined && this.dataStoreService.vicorV !== 0;
 
     if (!criterionsValid) {
       this.notifierService.notify('info', `
@@ -106,8 +111,13 @@ export class FirstStepComponent implements OnInit {
         Минимальное количество альтернатив: ${this.alternativesMinCount}
       `);
     }
+    if (!vicorVIsValid) {
+      this.notifierService.notify('warning', `
+        Необходимо ввести значение v для метода VICOR
+      `);
+    }
 
-    return alternativesValid && criterionsValid;
+    return alternativesValid && criterionsValid && vicorVIsValid;
   }
 
 }

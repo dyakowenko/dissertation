@@ -9,6 +9,7 @@ export class DataStoreService {
 
   alternativesMinCount = 2;
   criterionsMinCount = 2;
+  vicorV: number;
 
   alternatives: Alternative[] = [];
   criterions: Criterion[] = [
