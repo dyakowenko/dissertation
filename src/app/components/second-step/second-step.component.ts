@@ -4,6 +4,7 @@ import { Criterion } from 'src/app/shared/models/criterion.model';
 import { Alternative, Relation } from 'src/app/shared/models/alternative.model';
 import { NotifierService } from 'angular-notifier';
 import { CriterionState } from 'src/app/shared/enums/criterion-state.enum';
+import { Router } from '@angular/router';
 
 export class IdValue {
   criterionId?: number;
@@ -20,7 +21,8 @@ export class SecondStepComponent implements OnInit {
 
   constructor(
     private dataStoreService: DataStoreService,
-    private notifierService: NotifierService
+    private notifierService: NotifierService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -54,6 +56,10 @@ export class SecondStepComponent implements OnInit {
     alternative.relations.find(relation => relation.criterionId === criterion.id).value = value;
   }
 
+  relationValue(alternative: Alternative, criterion: Criterion) {
+    return alternative.relations.find(relation => relation.criterionId === criterion.id);
+  }
+
   goNextStep() {
     const isValid = !this.alternatives.some(x => x.relations.some(y => y.value === undefined || y.value === ''));
     if (!isValid) {
@@ -63,8 +69,9 @@ export class SecondStepComponent implements OnInit {
       return;
     }
 
-    // this.topsis();
+    this.topsis();
     this.vicor();
+    this.router.navigate(['/result']);
   }
 
   /**
@@ -150,13 +157,14 @@ export class SecondStepComponent implements OnInit {
     });
 
     const criterionsCount = this.criterions.length;
+    const alternativesCount = this.alternatives.length;
 
     // Сложить по строкам предыдущий результат и получаем корень
     const sumByLineIdeal: IdValue[] = [];
     this.alternatives.forEach((alternative, index) => {
       let sum = 0;
       for (let i = 0; i < criterionsCount; i++) {
-        const idxOfElement = i * criterionsCount + index;
+        const idxOfElement = i * alternativesCount + index;
         sum += extremumsNormalMinusOnSqareAndSqrt[idxOfElement].value;
       }
       sumByLineIdeal.push({
@@ -183,7 +191,7 @@ export class SecondStepComponent implements OnInit {
     this.alternatives.forEach((alternative, index) => {
       let sum = 0;
       for (let i = 0; i < criterionsCount; i++) {
-        const idxOfElement = i * criterionsCount + index;
+        const idxOfElement = i * alternativesCount + index;
         sum += extremumsNoNormalMinusOnSqareAndSqrt[idxOfElement].value;
       }
       sumByLineNoIdeal.push({
@@ -194,13 +202,15 @@ export class SecondStepComponent implements OnInit {
 
     // Неидеальную сумму делим на идеальную сложенную с неидеальной
     let relativeCloseness: IdValue[] = [];
-    for (let i = 0; i < criterionsCount; i++) {
+    for (let i = 0; i < alternativesCount; i++) {
       relativeCloseness.push({
+        alternativeId: sumByLineNoIdeal[i].alternativeId,
         value: sumByLineNoIdeal[i].value / (sumByLineNoIdeal[i].value + sumByLineIdeal[i].value)
       });
     }
     relativeCloseness = relativeCloseness.sort((a, b) => a.value - b.value);
-    console.log(relativeCloseness);
+
+    this.dataStoreService.topsisResult = relativeCloseness.map(x => ({ id: x.alternativeId, value: x.value }));
   }
 
   /**
@@ -262,7 +272,7 @@ export class SecondStepComponent implements OnInit {
 
         const value1 = extremumsNormalValue - relationValue;
         const value2 = extremumsNormalValue - extremumsNoNormalValue;
-        const value3 = value1 / value2;
+        const value3 = value1 === 0 || value2 === 0 ? 0 : value1 / value2;
         const resultValue = value3 * criterionWeight;
 
         sRightSideValues.push({
@@ -336,11 +346,7 @@ export class SecondStepComponent implements OnInit {
       sSumByLineSorted[0].alternativeId === sRightSideValuesMaxsSorted[0].alternativeId &&
       sSumByLineSorted[0].alternativeId === qValuesSorted[0].alternativeId;
 
-    console.log(sSumByLineSorted);
-    console.log(sRightSideValuesMaxsSorted);
-    console.log(qValuesSorted);
-    console.log(isDecisionStable1);
-    console.log(isDecisionStable2);
+    this.dataStoreService.vicorResult = qValuesSorted.map(x => ({ id: x.alternativeId, value: x.value }));
   }
 
 }

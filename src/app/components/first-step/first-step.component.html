@@ -9,6 +9,7 @@
                 autocomplete="off"
                 formControlName="name"
                 placeholder="Введите название альтернативы"
+                maxlength="50"
             >
             <div class="default-button" type="submit" (click)="addAlternative()">
                 <span>Добавить</span>
@@ -32,11 +33,11 @@
         <table class="first-step-container__criterions-list-table">
             <tr>
                 <th>Название</th>
-                <th>включён/выключен</th>
-                <th>макс/мин</th>
-                <th>вес (0 - 10)</th>
+                <th>Включён/Выключен</th>
+                <th>Макс/Мин</th>
+                <th>Вес</th>
             </tr>
-            <tr *ngFor="let criterion of criterions; let i = index">
+            <tr *ngFor="let criterion of criterions; let i = index" [ngClass]="{ 'tr-diff-back': i % 2 === 0 }">
                 <td class="first-step-container__item-option-td-name">
                     {{ i + 1 }}. {{ criterion.name }}
                 </td>
@@ -48,29 +49,45 @@
                         </label>
                     </div>
                 </td>
-                <td class="first-step-container__item-option-td-radio">
+                <td class="first-step-container__item-option-td-radio" [ngClass]="{ 'disabled-element': !criterion.active }">
                     <div class="radiobtn-container">
                         <div class="radiobtn">
-                            <input type="radio" [id]="criterion.id + 'stateMin'" [name]="criterion.id + 'radio'" [(ngModel)]="criterion.state" [value]="criterionState.Min"/>
+                            <input
+                                type="radio"
+                                [id]="criterion.id + 'stateMin'"
+                                [name]="criterion.id + 'radio'"
+                                [(ngModel)]="criterion.state"
+                                [value]="criterionState.Min"
+                                [disabled]="criterion.active ? null : true"
+                            />
                             <label class="radiobtn__label" [for]="criterion.id + 'stateMin'">
                                 <span class="radiobtn__indicator"></span>Min
                             </label>
                         </div>
                         <div class="radiobtn">
-                            <input type="radio" [id]="criterion.id + 'stateMax'" [name]="criterion.id + 'radio'" [(ngModel)]="criterion.state" [value]="criterionState.Max"/>
+                            <input
+                                type="radio"
+                                [id]="criterion.id + 'stateMax'"
+                                [name]="criterion.id + 'radio'"
+                                [(ngModel)]="criterion.state"
+                                [value]="criterionState.Max"
+                                [disabled]="criterion.active ? null : true"
+                            />
                             <label class="radiobtn__label" [for]="criterion.id + 'stateMax'">
                                 <span class="radiobtn__indicator"></span>Max
                             </label>
                         </div>
                     </div>
                 </td>
-                <td>
+                <td [ngClass]="{ 'disabled-element': !criterion.active }">
                     <div class="td-container">
                         <input
                             class="table-input"
-                            type="number"
+                            type="text"
+                            mask="0*.0*"
                             autocomplete="off"
                             [(ngModel)]="criterion.weight"
+                            [disabled]="criterion.active ? null : true"
                         >
                     </div>
                 </td>
@@ -80,8 +97,10 @@
 
     <div class="first-step-container__default-block">
         <input
-            type="number"
+            type="text"
+            mask="0*.0*"
             autocomplete="off"
+            [value]="vicorV"
             (input)="setVicorV(+$event.target.value)"
             placeholder="v для викора"
         >
@@ -93,7 +112,7 @@
 
     <div
         class="default-button"
-        (click)="goNextStep()"
+        [routerLink]="['/fill']"
     >
         <span>Перейти к заполнению таблицы значений</span>
     </div>

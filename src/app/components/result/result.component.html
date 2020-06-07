@@ -1,0 +1,46 @@
+<div class="container">
+    <div class="result-container">
+        <div class="result-container__block-info">
+            TOPSIS
+        </div>
+        <div class="result-container__block-table">
+            <table>
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr *ngFor="let item of topsis; let i = index" [ngClass]="{ 'tr-diff-back': i % 2 === 0 }">
+                    <td>
+                        {{ getAlternativeName(item.id) }}
+                    </td>
+                    <td>
+                        {{ item.value }}
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    <div class="result-container">
+        <div class="result-container__block-info">
+            VICOR
+        </div>
+        <div class="result-container__block-table">
+            <table>
+                <tr>
+                    <th></th>
+                    <th></th>
+                </tr>
+                <tr *ngFor="let item of vicor; let i = index" [ngClass]="{ 'tr-diff-back': i % 2 === 0 }">
+                    <td>
+                        {{ getAlternativeName(item.id) }}
+                    </td>
+                    <td>
+                        {{ item.value }}
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>

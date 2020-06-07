@@ -58,6 +58,13 @@ export class FirstStepComponent implements OnInit {
     this.dataStoreService.vicorV = value;
   }
 
+  get vicorV(): number {
+    if (isNaN(this.dataStoreService.vicorV)) {
+      return null;
+    }
+    return this.dataStoreService.vicorV;
+  }
+
   addAlternative() {
     const alternativeName = this.addAlternativesForm.get('name').value as string;
     if (this.addAlternativesForm.valid && alternativeName.trim()) {
@@ -78,46 +85,6 @@ export class FirstStepComponent implements OnInit {
 
   deleteAlternative(alternativeId: number) {
     this.dataStoreService.alternatives = this.alternatives.filter(x => x.id !== alternativeId);
-  }
-
-  goNextStep() {
-    if (this.checkValid()) {
-      this.router.navigate(['/fill']);
-    }
-  }
-
-  checkValid(): boolean {
-    const alternativesValid = this.alternatives.length >= this.alternativesMinCount;
-    const criterionsValid = this.criterions.filter(x =>
-      x.active &&
-      x.state !== undefined &&
-      x.weight !== undefined &&
-      x.weight >= 0 &&
-      x.weight <= 10
-    ).length >= this.criterionsMinCount;
-    const vicorVIsValid = this.dataStoreService.vicorV !== undefined && this.dataStoreService.vicorV !== 0;
-
-    if (!criterionsValid) {
-      this.notifierService.notify('info', `
-        Для использования специального метода значения весов критериев заполнять не нужно
-      `);
-      this.notifierService.notify('warning', `
-        Минимальное количество выбранных критериев: ${this.criterionsMinCount}.
-        Для продолжения необходимо заполнить поля выбранных критериев (макс/мин, вес)
-      `);
-    }
-    if (!alternativesValid) {
-      this.notifierService.notify('warning', `
-        Минимальное количество альтернатив: ${this.alternativesMinCount}
-      `);
-    }
-    if (!vicorVIsValid) {
-      this.notifierService.notify('warning', `
-        Необходимо ввести значение v для метода VICOR
-      `);
-    }
-
-    return alternativesValid && criterionsValid && vicorVIsValid;
   }
 
 }

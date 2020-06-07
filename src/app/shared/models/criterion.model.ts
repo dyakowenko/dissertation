@@ -5,11 +5,13 @@ export class Criterion {
     name: string;
     active?: boolean;
     state?: CriterionState;
+    countable?: boolean;
+    qualityList?: IdValue[] = [];
     weight?: number;
-    relations?: Relation[] = [];
+    relations?: IdValue[] = [];
 }
 
-export class Relation {
+export class IdValue {
     id: number;
-    value?: number;
+    value?: any;
 }

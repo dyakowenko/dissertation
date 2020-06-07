@@ -2,29 +2,41 @@
 
     <table>
         <tr>
-            <th>/</th>
+            <th></th>
             <th *ngFor="let criterion of criterions">
                 {{ criterion.name }}
             </th>
         </tr>
-        <tr *ngFor="let alternative of alternatives">
+        <tr *ngFor="let alternative of alternatives; let i = index">
             <td>
                 {{ alternative.name }}
             </td>
             <td class="first-step-container__item-option-td-radio" *ngFor="let criterion of criterions">
                 <input
-                    type="number"
+                    *ngIf="criterion.countable; else dropdown"
+                    type="text"
+                    mask="0*.0*"
                     autocomplete="off"
                     (input)="setRelationValue($event.target.value, alternative, criterion)"
                 >
+
+                <ng-template #dropdown>
+                    <select [(ngModel)]="relationValue(alternative, criterion).value">
+                        <option hidden value="" selected>Выбрать</option>
+                        <option *ngFor="let item of criterion.qualityList" [value]="item.id">
+                            {{ item.value }}
+                        </option>
+                    </select>
+                </ng-template>
             </td>
         </tr>
     </table>
 
-    <button
+    <div
+        class="default-button"
         (click)="goNextStep()"
     >
         Вычислить
-    </button>
+    </div>
 
 </div>

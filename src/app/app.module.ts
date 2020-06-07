@@ -15,6 +15,7 @@ import { HomeComponent } from './components/home/home.component';
 import { FirstStepComponent } from './components/first-step/first-step.component';
 import { SpecMethodComponent } from './components/spec-method/spec-method.component';
 import { SecondStepComponent } from './components/second-step/second-step.component';
+import { ResultComponent } from './components/result/result.component';
 
 const FIREBASE_CONFIG = {
   apiKey: 'AIzaSyBDsxJCI_m6ph8ZpR0HSEoOtgJRhLBiBNw',
@@ -32,7 +33,8 @@ const FIREBASE_CONFIG = {
     FirstStepComponent,
     HomeComponent,
     SpecMethodComponent,
-    SecondStepComponent
+    SecondStepComponent,
+    ResultComponent
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,7 @@ const FIREBASE_CONFIG = {
         onClick: 'hide',
         onMouseover: 'pauseAutoHide',
         showDismissButton: true,
-        stacking: 3
+        stacking: 5
       }
     })
   ],

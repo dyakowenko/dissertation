@@ -4,17 +4,20 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        width: 500px;
-        background: white;
+        width: fit-content;
+        max-width: 950px;
+        min-width: 500px;
         border-radius: 10px;
         padding: 1rem;
         box-shadow: 0 1px 4px rgba(0,0,0,.15);
         margin: 1rem 0;
+
+        border: solid #595959 1px;
+        background-color: #303030;
     }
 
     &__default-block-title {
         text-align: center;
-        font-weight: bold;
         margin-bottom: 1rem;
     }
 
@@ -35,7 +38,7 @@
     }
 
     &__alternatives-list-item-delete-btn {
-        color: darkred;
+        color: #f4f4f4;
 
         &:hover {
             cursor: pointer;
@@ -44,11 +47,10 @@
 
     &__item-option-td-name {
         text-align: left;
-        white-space: nowrap;
     }
 
     &__item-option-td-checkbox {
-        display: flex;
+        display: table-cell;
     }
 
     &__item-option-td-radio {
