@@ -208,7 +208,7 @@ export class SecondStepComponent implements OnInit {
         value: sumByLineNoIdeal[i].value / (sumByLineNoIdeal[i].value + sumByLineIdeal[i].value)
       });
     }
-    relativeCloseness = relativeCloseness.sort((a, b) => a.value - b.value);
+    relativeCloseness = relativeCloseness.sort((a, b) => b.value - a.value);
 
     this.dataStoreService.topsisResult = relativeCloseness.map(x => ({ id: x.alternativeId, value: x.value }));
   }
