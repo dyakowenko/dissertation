@@ -11,9 +11,8 @@
         padding: 1rem;
         box-shadow: 0 1px 4px rgba(0,0,0,.15);
         margin: 1rem 0;
-
         border: solid #595959 1px;
-        background-color: #303030;
+        background-color: #e6e6e6;
     }
 
     &__default-block-title {
@@ -38,7 +37,7 @@
     }
 
     &__alternatives-list-item-delete-btn {
-        color: #f4f4f4;
+        color: #d05454;
 
         &:hover {
             cursor: pointer;

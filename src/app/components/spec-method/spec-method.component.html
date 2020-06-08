@@ -61,9 +61,44 @@
 
     <div
         class="default-button"
-        (click)="goNextStep()"
+        (click)="calcWeights()"
     >
-        Перейти дальше
+        Посчитать веса критериев
+    </div>
+
+    <div class="first-step-container__default-block" *ngIf="criterionsCalculated">
+        <div class="first-step-container__default-block-title">Критерии</div>
+
+        <table class="first-step-container__criterions-list-table">
+            <tr>
+                <th>Название</th>
+                <th>Вес</th>
+            </tr>
+            <tr *ngFor="let criterion of criterions; let i = index" [ngClass]="{ 'tr-diff-back': i % 2 === 0 }">
+                <td class="first-step-container__item-option-td-name">
+                    {{ i + 1 }}. {{ criterion.name }}
+                </td>
+                <td [ngClass]="{ 'disabled-element': !criterion.active }">
+                    <div class="td-container">
+                        <input
+                            class="table-input"
+                            type="text"
+                            mask="0*.0*"
+                            autocomplete="off"
+                            [(ngModel)]="criterion.weight"
+                            [disabled]="criterion.active ? null : true"
+                        >
+                    </div>
+                </td>
+            </tr>
+        </table>
+
+        <div
+            class="default-button"
+            (click)="goNextStep()"
+        >
+            Перейти дальше
+        </div>
     </div>
 
 </div>

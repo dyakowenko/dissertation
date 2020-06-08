@@ -3,6 +3,7 @@ import { Criterion } from 'src/app/shared/models/criterion.model';
 import { DataStoreService } from 'src/app/core/services/data-store.service';
 import { NotifierService } from 'angular-notifier';
 import { Router } from '@angular/router';
+import { CriterionState } from 'src/app/shared/enums/criterion-state.enum';
 
 @Component({
   selector: 'app-spec-method',
@@ -10,6 +11,9 @@ import { Router } from '@angular/router';
   styleUrls: ['./spec-method.component.scss']
 })
 export class SpecMethodComponent implements OnInit {
+
+  criterionState = CriterionState;
+  criterionsCalculated = false;
 
   constructor(
     private dataStoreService: DataStoreService,
@@ -63,7 +67,7 @@ export class SpecMethodComponent implements OnInit {
     return criterionLine.relations.find(relation => relation.id === criterionColumn.id).value;
   }
 
-  goNextStep() {
+  calcWeights() {
     const isTableValid = !this.criterions.some(x => x.relations.some(y => y.value === undefined));
     if (!isTableValid) {
       this.notifierService.notify('warning', `
@@ -78,6 +82,11 @@ export class SpecMethodComponent implements OnInit {
     this.criterions.forEach(x => {
       x.weight = x.relations.reduce((sum, relation) => sum + relation.value, 0) / allRelationsSum;
     });
+    this.criterionsCalculated = true;
+  }
+
+  goNextStep() {
+    this.calcWeights();
     this.router.navigate(['/fill']);
   }
 

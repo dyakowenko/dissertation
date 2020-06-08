@@ -7,7 +7,7 @@
 @import '../src/assets/styles/blocks/checkbox';
 @import '../src/assets/styles/blocks/radiobtn.scss';
 
-$color: #4ad270;
+$color: #4f9863;
 
 html, body {
     font-family: 'Roboto', sans-serif;
@@ -17,9 +17,9 @@ body {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
-    color: #f4f4f4;
+    color: #000000;
     border-color: #595959;
-    background-color: #303030;
+    background-color: #d2d2d2;
 }
 
 *, *:before, *:after {
@@ -66,6 +66,7 @@ input::-webkit-input-placeholder {
 }
 
 input {
+    text-align: center;
     width: 100%;
     padding-top: 1rem;
     display: block;
@@ -76,7 +77,7 @@ input {
     background-position: -1980px 0;
     background-size: 1980px 100%;
     background-repeat: no-repeat;
-    color: #f4f4f4;
+    color: #000000;
     &:focus {
         box-shadow: none;
         outline: none;
@@ -155,13 +156,13 @@ td {
 }
 
 a {
-    color: #4ad270;
+    color: #4f9863;
 }
 
 select {
-    color: #f4f4f4;
+    color: #000000;
     border-color: #595959;
-    background-color: #303030;
+    background-color: #d2d2d2;
     border-radius: 5px;
     padding: 0.5rem;
     cursor: pointer;
@@ -174,5 +175,5 @@ option {
 }
 
 .tr-diff-back {
-    background-color: #3a3a3a;
+    background-color: #9c9c9c;
 }

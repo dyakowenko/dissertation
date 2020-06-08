@@ -9,7 +9,7 @@
                     <th></th>
                     <th></th>
                 </tr>
-                <tr *ngFor="let item of topsis; let i = index" [ngClass]="{ 'tr-diff-back': i % 2 === 0 }">
+                <tr *ngFor="let item of topsis; let i = index" [ngClass]="{ 'result-container__best-item': i === 0 }">
                     <td>
                         {{ getAlternativeName(item.id) }}
                     </td>
@@ -31,7 +31,7 @@
                     <th></th>
                     <th></th>
                 </tr>
-                <tr *ngFor="let item of vicor; let i = index" [ngClass]="{ 'tr-diff-back': i % 2 === 0 }">
+                <tr *ngFor="let item of vicor; let i = index" [ngClass]="{ 'result-container__best-item': i === 0 }">
                     <td>
                         {{ getAlternativeName(item.id) }}
                     </td>

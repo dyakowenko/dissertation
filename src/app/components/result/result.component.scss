@@ -24,6 +24,11 @@
         margin: 1rem 0;
         font-size: 1.5rem;
         border: solid #595959 1px;
-        background-color: #303030;
+        background-color: #ffffff;
+    }
+
+    &__best-item {
+        font-weight: bold;
+        font-size: 1.5rem;
     }
 }

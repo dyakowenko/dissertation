@@ -5,3 +5,68 @@ td, tr {
 table {
     border-spacing: 0;
 }
+
+.first-step-container {
+    &__default-block {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        width: fit-content;
+        max-width: 950px;
+        min-width: 500px;
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 0 1px 4px rgba(0,0,0,.15);
+        margin: 1rem 0;
+        border: solid #595959 1px;
+        background-color: #e6e6e6;
+    }
+
+    &__default-block-title {
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    &__alternatives-add-form {
+        display: flex;
+    }
+
+    &__criterions-list-table {
+        width: 100%;
+    }
+
+    &__default-list-item {
+        margin: 0.5rem 0;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        line-height: 24px;
+    }
+
+    &__alternatives-list-item-delete-btn {
+        color: #d05454;
+
+        &:hover {
+            cursor: pointer;
+        }
+    }
+
+    &__item-option-td-name {
+        text-align: left;
+    }
+
+    &__item-option-td-checkbox {
+        display: table-cell;
+    }
+
+    &__item-option-td-radio {
+        display: table-cell;
+    }
+}
+
+td {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
