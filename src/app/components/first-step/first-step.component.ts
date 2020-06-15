@@ -17,6 +17,7 @@ export class FirstStepComponent implements OnInit {
 
   criterionState = CriterionState;
   addAlternativesForm: FormGroup;
+  vForm: FormGroup;
 
   faTimesCircle = faTimesCircle;
 
@@ -36,6 +37,13 @@ export class FirstStepComponent implements OnInit {
         Validators.required
       ]),
     });
+    this.vForm = new FormGroup({
+      v: new FormControl('', [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(1),
+      ]),
+    });
   }
 
   get alternatives(): Alternative[] {
@@ -52,10 +60,6 @@ export class FirstStepComponent implements OnInit {
 
   get criterionsMinCount(): number {
     return this.dataStoreService.criterionsMinCount;
-  }
-
-  setVicorV(value: number) {
-    this.dataStoreService.vicorV = value;
   }
 
   get vicorV(): number {
@@ -85,6 +89,43 @@ export class FirstStepComponent implements OnInit {
 
   deleteAlternative(alternativeId: number) {
     this.dataStoreService.alternatives = this.alternatives.filter(x => x.id !== alternativeId);
+  }
+
+  isVValid() {
+    if (this.vForm.invalid) {
+      this.notifierService.notify('warning', `
+        Необходимо ввести значение v для метода VICOR от 0 до 1
+      `);
+      return false;
+    }
+
+    this.dataStoreService.vicorV = +this.vForm.get('v').value;
+    return true;
+  }
+
+  isWeightsValid() {
+    const criterions = this.criterions.filter(x => x.active);
+    const invalidWeigths = criterions.some(x => x.weight > 1);
+    const invalidSumWeigths = criterions.reduce((total, item) => total + item.weight, 0) !== 1;
+    if (invalidWeigths || invalidSumWeigths) {
+      this.notifierService.notify('warning', `
+        Значения весов должны быть от 0 до 1. Сумма введённых весов выбранных критериев должна быть равна 1.
+      `);
+      return false;
+    }
+    return true;
+  }
+
+  goToSpecMethod() {
+    if (this.isVValid()) {
+      this.router.navigate(['/spec-method']);
+    }
+  }
+
+  goToFill() {
+    if (this.isVValid() && this.isWeightsValid()) {
+      this.router.navigate(['/fill']);
+    }
   }
 
 }

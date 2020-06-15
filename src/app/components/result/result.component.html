@@ -1,8 +1,16 @@
 <div class="container">
+    <div class="page-header">
+        Результаты
+    </div>
+
+    <div class="result-container__block-info-sec">
+        Ранжированный список (от наилучшей альтернативы к наихудшей), где выделенная альтернатива, находящаяся на первом месте, является наилучшей по методу TOPSIS: 
+    </div>
     <div class="result-container">
-        <div class="result-container__block-info">
+        <div class="result-container__block-first">
             TOPSIS
         </div>
+
         <div class="result-container__block-table">
             <table>
                 <tr>
@@ -21,10 +29,14 @@
         </div>
     </div>
 
+    <div class="result-container__block-info-sec">
+        Ранжированный список (от наилучшей альтернативы к наихудшей), где выделенная альтернатива, находящаяся на первом месте, является наилучшей по методу VICOR:
+    </div>
     <div class="result-container">
-        <div class="result-container__block-info">
+        <div class="result-container__block-first">
             VICOR
         </div>
+
         <div class="result-container__block-table">
             <table>
                 <tr>
@@ -41,6 +53,16 @@
                     
                 </tr>
             </table>
+        </div>
+    </div>
+
+    <div class="btn-group">
+        <div class="default-button" [routerLink]="['/fill']">
+            <span>Назад</span>
+        </div>
+
+        <div class="default-button" [routerLink]="['/']">
+            <span>На главную</span>
         </div>
     </div>
 </div>

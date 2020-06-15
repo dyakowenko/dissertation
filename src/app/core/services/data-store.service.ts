@@ -17,12 +17,12 @@ export class DataStoreService {
   criterions: Criterion[] = [
     {
       id: 1,
-      name: 'Сроки доставки',
+      name: 'Сроки доставки (дней)',
       countable: true
     },
     {
       id: 2,
-      name: 'Стоимость доставки',
+      name: 'Стоимость доставки (рублей)',
       countable: true
     },
     {
@@ -46,12 +46,12 @@ export class DataStoreService {
     },
     {
       id: 5,
-      name: 'Цена продукции',
+      name: 'Цена продукции (рублей)',
       countable: true
     },
     {
       id: 6,
-      name: 'Местоположение поставщика',
+      name: 'Местоположение поставщика (расстояние в км)',
       countable: true
     },
     {
@@ -74,27 +74,27 @@ export class DataStoreService {
     },
     {
       id: 9,
-      name: 'Количество лет на рынке',
+      name: 'Количество лет на рынке (сколько лет)',
       countable: true
     },
     {
       id: 10,
-      name: 'Минимальный объём заказа',
+      name: 'Минимальный объём заказа (в кг)',
       countable: true
     },
     {
       id: 11,
-      name: 'Ассортимент',
+      name: 'Ассортимент (сколько видов)',
       countable: true
     },
     {
       id: 12,
-      name: 'Производственные мощности',
+      name: 'Производственные мощности (тонн в месяц)',
       countable: true
     },
     {
       id: 13,
-      name: 'Количество оптовых клиентов',
+      name: 'Количество оптовых клиентов (количество)',
       countable: true
     },
     {

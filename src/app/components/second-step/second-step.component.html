@@ -1,4 +1,7 @@
 <div class="container">
+    <div class="page-header">
+        Матрица полезностей
+    </div>
 
     <table>
         <tr>
@@ -32,11 +35,14 @@
         </tr>
     </table>
 
-    <div
-        class="default-button"
-        (click)="goNextStep()"
-    >
-        Вычислить
+    <div class="btn-group">
+        <div class="default-button" [routerLink]="['/calc']">
+            <span>Назад</span>
+        </div>
+
+        <div class="default-button" (click)="goNextStep()">
+            <span>Вычислить</span>
+        </div>
     </div>
 
 </div>

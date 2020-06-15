@@ -2,11 +2,20 @@
     display: flex;
     width: 100%;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
+    margin: 2rem 0;
 
     &__block-info {
+        display: flex;
+        width: 100%;    
+    }
+
+    &__block-info-sec {
+        font-size: 1.5rem;
+    }
+
+    &__block-first {
         font-size: 4rem;
-        width: 50%;
         display: flex;
         align-items: center;
     }

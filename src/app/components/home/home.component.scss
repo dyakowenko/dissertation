@@ -1,4 +1,43 @@
-.title {
-    font-size: 2rem;
-    text-align: center;
+.home {
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__h1-tite {
+        font-size: 3rem;
+    }
+
+    &__h2-tite {
+        font-size: 2rem;
+    }
+
+    &__text-block {
+        text-indent: 1.5rem;
+        width: 100%;
+    }
+
+    &__text-container {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        max-width: 1200px;
+        min-width: 500px;
+        border-radius: 10px;
+        padding: 1rem;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+        border: solid #595959 1px;
+        background-color: white;
+    }
+
+    &__big-btn {
+        height: 50px;
+        max-height: 100px;
+        width: 250px;
+        border-radius: 80px;
+
+        span {
+            font-size: 1rem;
+        }
+    }
 }

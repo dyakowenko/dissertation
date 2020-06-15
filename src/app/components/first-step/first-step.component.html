@@ -1,4 +1,7 @@
 <div class="container first-step-container">
+    <div class="page-header">
+        Постановка задачи
+    </div>
 
     <div class="first-step-container__default-block">
         <div class="first-step-container__default-block-title">Альтернативы</div>
@@ -83,8 +86,7 @@
                     <div class="td-container">
                         <input
                             class="table-input"
-                            type="text"
-                            mask="0*.0*"
+                            type="number"
                             autocomplete="off"
                             [(ngModel)]="criterion.weight"
                             [disabled]="criterion.active ? null : true"
@@ -95,26 +97,25 @@
         </table>
     </div>
 
-    <div class="first-step-container__default-block">
+    <div class="first-step-container__default-block" [formGroup]="vForm">
         <input
-            type="text"
-            mask="0*.0*"
+            type="number"
             autocomplete="off"
-            [value]="vicorV"
-            (input)="setVicorV(+$event.target.value)"
+            formControlName="v"
             placeholder="v для викора"
         >
     </div>
 
-    <div>
-        Вместо ввода весов вы можете использовать <a [routerLink]="['/spec-method']">специальный метод</a>
-    </div>
+    <div>Вместо ввода весов вы можете использовать <a (click)="$event.preventDefault(); goToSpecMethod()">специальный метод</a></div>
 
-    <div
-        class="default-button"
-        [routerLink]="['/fill']"
-    >
-        <span>Перейти к заполнению таблицы значений</span>
+    <div class="btn-group">
+        <div class="default-button" [routerLink]="['/']">
+            <span>Назад</span>
+        </div>
+
+        <div class="default-button" (click)="goToFill()">
+            <span>Перейти к заполнению таблицы значений</span>
+        </div>
     </div>
 
 </div>

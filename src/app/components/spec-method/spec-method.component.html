@@ -1,4 +1,7 @@
 <div class="container">
+    <div class="page-header">
+        Попарное сравнение по абсолютной важности
+    </div>
 
     <table>
         <tr>
@@ -59,11 +62,14 @@
         </tr>
     </table>
 
-    <div
-        class="default-button"
-        (click)="calcWeights()"
-    >
-        Посчитать веса критериев
+    <div class="btn-group">
+        <div *ngIf="!criterionsCalculated" class="default-button" [routerLink]="['/calc']">
+            <span>Назад</span>
+        </div>
+
+        <div class="default-button" (click)="calcWeights()">
+            <span>Посчитать веса критериев</span>
+        </div>
     </div>
 
     <div class="first-step-container__default-block" *ngIf="criterionsCalculated">
@@ -93,11 +99,14 @@
             </tr>
         </table>
 
-        <div
-            class="default-button"
-            (click)="goNextStep()"
-        >
-            Перейти дальше
+        <div class="btn-group">
+            <div class="default-button" [routerLink]="['/calc']">
+                <span>Назад</span>
+            </div>
+    
+            <div class="default-button" (click)="goNextStep()">
+                <span>Перейти дальше</span>
+            </div>
         </div>
     </div>
 
