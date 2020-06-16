@@ -16,15 +16,15 @@ export class ResultComponent implements OnInit {
   }
 
   get topsis() {
-    return this.dataStoreService.topsisResult;
+    return this.dataStoreService.currentDataset.topsisResult;
   }
 
   get vicor() {
-    return this.dataStoreService.vicorResult;
+    return this.dataStoreService.currentDataset.vicorResult;
   }
 
   getAlternativeName(id: number): string {
-    return this.dataStoreService.alternatives.find(x => x.id === id).name;
+    return this.dataStoreService.currentDataset.alternatives.find(x => x.id === id).name;
   }
 
 }

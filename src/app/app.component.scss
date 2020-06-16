@@ -3,3 +3,30 @@
     min-width: 100%;
     min-height: 100%;
 }
+
+.header {
+    height: 65px;
+    background: #4fbfaa;
+    display: flex;
+    padding: 0 1rem;
+    color: white;
+    letter-spacing: 1px;
+
+    &__href {
+        width: min-content;
+        cursor: pointer;
+        margin: 0 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+
+        &:focus {
+            outline: none;
+        }
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}

@@ -1,5 +1,11 @@
 <div class="main-container">
 
+  <div class="header">
+    <div class="header__href" [routerLink]="['/']" >Главная</div>
+    <div class="header__href" (click)="goToCalc()">Перейти к вычислениям</div>
+    <div class="header__href" [routerLink]="['/datasets']">История</div>
+  </div>
+
   <router-outlet></router-outlet>
   <notifier-container></notifier-container>
 

@@ -20,6 +20,7 @@
                     type="text"
                     mask="0*.0*"
                     autocomplete="off"
+                    [value]="getRelationValue(alternative, criterion)"
                     (input)="setRelationValue($event.target.value, alternative, criterion)"
                 >
 

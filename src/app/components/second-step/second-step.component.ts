@@ -5,6 +5,8 @@ import { Alternative, Relation } from 'src/app/shared/models/alternative.model';
 import { NotifierService } from 'angular-notifier';
 import { CriterionState } from 'src/app/shared/enums/criterion-state.enum';
 import { Router } from '@angular/router';
+import { Dataset } from 'src/app/shared/models/dataset.model';
+import { FirebaseService } from 'src/app/core/services/firebase.service';
 
 export class IdValue {
   criterionId?: number;
@@ -22,6 +24,7 @@ export class SecondStepComponent implements OnInit {
   constructor(
     private dataStoreService: DataStoreService,
     private notifierService: NotifierService,
+    private firebaseService: FirebaseService,
     private router: Router
   ) { }
 
@@ -30,15 +33,15 @@ export class SecondStepComponent implements OnInit {
   }
 
   get alternatives(): Alternative[] {
-    return this.dataStoreService.alternatives;
+    return this.dataStoreService.currentDataset.alternatives;
   }
 
   get criterions(): Criterion[] {
-    return this.dataStoreService.criterions.filter(x => x.active);
+    return this.dataStoreService.currentDataset.criterions;
   }
 
   initRelationsObjects() {
-    this.dataStoreService.alternatives.forEach(alternative => {
+    this.dataStoreService.currentDataset.alternatives.forEach(alternative => {
       if (!alternative.relations) {
         alternative.relations = [];
       }
@@ -52,8 +55,16 @@ export class SecondStepComponent implements OnInit {
     });
   }
 
+  getRelationValue(alternative: Alternative, criterion: Criterion) {
+    const relValue = alternative.relations.find(relation => relation.criterionId === criterion.id).value;
+    if (relValue === undefined) {
+      return '';
+    }
+    return relValue;
+  }
+
   setRelationValue(value: number, alternative: Alternative, criterion: Criterion) {
-    alternative.relations.find(relation => relation.criterionId === criterion.id).value = value;
+    alternative.relations.find(relation => relation.criterionId === criterion.id).value = +value;
   }
 
   relationValue(alternative: Alternative, criterion: Criterion) {
@@ -71,6 +82,20 @@ export class SecondStepComponent implements OnInit {
 
     this.topsis();
     this.vicor();
+
+    const dataset: Dataset = {
+      vicorV: this.dataStoreService.currentDataset.vicorV,
+      alternatives: this.dataStoreService.currentDataset.alternatives,
+      criterions: this.dataStoreService.currentDataset.criterions,
+      vicorResult: this.dataStoreService.currentDataset.vicorResult,
+      topsisResult: this.dataStoreService.currentDataset.topsisResult,
+    };
+    if (this.dataStoreService.datasets.find(x => x.id === this.dataStoreService.currentDataset.id)) {
+      this.firebaseService.updateDataset(this.dataStoreService.currentDataset.id, dataset);
+    } else {
+      this.firebaseService.createDataset(dataset);
+    }
+
     this.router.navigate(['/result']);
   }
 
@@ -210,7 +235,7 @@ export class SecondStepComponent implements OnInit {
     }
     relativeCloseness = relativeCloseness.sort((a, b) => b.value - a.value);
 
-    this.dataStoreService.topsisResult = relativeCloseness.map(x => ({ id: x.alternativeId, value: x.value }));
+    this.dataStoreService.currentDataset.topsisResult = relativeCloseness.map(x => ({ id: x.alternativeId, value: x.value }));
   }
 
   /**
@@ -321,9 +346,9 @@ export class SecondStepComponent implements OnInit {
 
     const qValues: IdValue[] = [];
     sSumByLine.forEach((x, index) => {
-      const valueS = this.dataStoreService.vicorV * ((x.value - sSumByLineMin) / (sSumByLineMax - sSumByLineMin));
+      const valueS = this.dataStoreService.currentDataset.vicorV * ((x.value - sSumByLineMin) / (sSumByLineMax - sSumByLineMin));
       // tslint:disable-next-line:max-line-length
-      const valueR = (1 - this.dataStoreService.vicorV) * ((sRightSideValuesMaxs[index].value - sRightSideValuesMaxsMin) / (sRightSideValuesMaxsMax - sRightSideValuesMaxsMin));
+      const valueR = (1 - this.dataStoreService.currentDataset.vicorV) * ((sRightSideValuesMaxs[index].value - sRightSideValuesMaxsMin) / (sRightSideValuesMaxsMax - sRightSideValuesMaxsMin));
       const qValue = valueS + valueR;
       qValues.push({
         alternativeId: x.alternativeId,
@@ -346,7 +371,7 @@ export class SecondStepComponent implements OnInit {
       sSumByLineSorted[0].alternativeId === sRightSideValuesMaxsSorted[0].alternativeId &&
       sSumByLineSorted[0].alternativeId === qValuesSorted[0].alternativeId;
 
-    this.dataStoreService.vicorResult = qValuesSorted.map(x => ({ id: x.alternativeId, value: x.value }));
+    this.dataStoreService.currentDataset.vicorResult = qValuesSorted.map(x => ({ id: x.alternativeId, value: x.value }));
   }
 
 }

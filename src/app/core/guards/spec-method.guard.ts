@@ -15,12 +15,12 @@ export class SpecMethodGuard implements CanActivate {
   ) { }
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const alternativesValid = this.dataStoreService.alternatives.length >= this.dataStoreService.alternativesMinCount;
-    const criterionsValid = this.dataStoreService.criterions.filter(x =>
+    const alternativesValid = this.dataStoreService.currentDataset.alternatives.length >= this.dataStoreService.alternativesMinCount;
+    const criterionsValid = this.dataStoreService.criterionsList.filter(x =>
       x.active &&
       x.state !== undefined
     ).length >= this.dataStoreService.criterionsMinCount;
-    const vicorVIsValid = this.dataStoreService.vicorV !== undefined && this.dataStoreService.vicorV >= 0 && this.dataStoreService.vicorV <= 1;
+    const vicorVIsValid = this.dataStoreService.currentDataset.vicorV !== undefined && this.dataStoreService.currentDataset.vicorV >= 0 && this.dataStoreService.currentDataset.vicorV <= 1;
 
     if (alternativesValid && criterionsValid && vicorVIsValid) {
       return true;

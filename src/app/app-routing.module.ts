@@ -7,6 +7,7 @@ import { SpecMethodGuard } from './core/guards/spec-method.guard';
 import { SecondStepComponent } from './components/second-step/second-step.component';
 import { FillGuard } from './core/guards/fill.guard';
 import { ResultComponent } from './components/result/result.component';
+import { DatasetsComponent } from './components/datasets/datasets.component';
 
 
 const routes: Routes = [
@@ -31,6 +32,10 @@ const routes: Routes = [
   {
     path: 'result',
     component: ResultComponent
+  },
+  {
+    path: 'datasets',
+    component: DatasetsComponent
   },
 ];
 

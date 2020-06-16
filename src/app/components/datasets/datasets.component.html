@@ -1,0 +1,31 @@
+<div class="container datasets">
+    <div class="page-header">
+        Прошлые вычисления
+    </div>
+
+    <div *ngFor="let dataset of datasets" class="datasets__dataset-item">
+        <div class="datasets__dataset-item-options">
+            <div (click)="chooseDataset(dataset)" class="datasets__dataset-item-option">Редактировать</div>
+            <div (click)="deleteDataset(dataset.id)" class="datasets__dataset-item-option datasets__dataset-item-option--red">Удалить</div>
+        </div>
+
+        <table>
+            <tr>
+                <th></th>
+                <th>TOPSIS</th>
+                <th>VICOR</th>
+            </tr>
+            <tr *ngFor="let alternative of dataset.alternatives; let i = index" [ngClass]="{ 'datasets__alt-name--best': isBestAlt(dataset, alternative) }">
+                <td class="datasets__alt-name">
+                    {{ alternative.name }}
+                </td>
+                <td>
+                    {{ getTopsisResult(dataset, alternative.id) }}
+                </td>
+                <td>
+                    {{ getVicorResult(dataset, alternative.id) }}
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

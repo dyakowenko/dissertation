@@ -26,11 +26,11 @@ export class SpecMethodComponent implements OnInit {
   }
 
   get criterions(): Criterion[] {
-    return this.dataStoreService.criterions.filter(x => x.active);
+    return this.dataStoreService.currentDataset.criterions.filter(x => x.active);
   }
 
   initRelationsObjects() {
-    this.dataStoreService.criterions.forEach(criterion1 => {
+    this.dataStoreService.currentDataset.criterions.forEach(criterion1 => {
       if (!criterion1.relations) {
         criterion1.relations = [];
       }

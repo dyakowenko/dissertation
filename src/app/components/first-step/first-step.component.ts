@@ -38,7 +38,7 @@ export class FirstStepComponent implements OnInit {
       ]),
     });
     this.vForm = new FormGroup({
-      v: new FormControl('', [
+      v: new FormControl(this.dataStoreService.currentDataset.vicorV, [
         Validators.required,
         Validators.min(0),
         Validators.max(1),
@@ -47,11 +47,11 @@ export class FirstStepComponent implements OnInit {
   }
 
   get alternatives(): Alternative[] {
-    return this.dataStoreService.alternatives;
+    return this.dataStoreService.currentDataset.alternatives;
   }
 
   get criterions(): Criterion[] {
-    return this.dataStoreService.criterions;
+    return this.dataStoreService.criterionsList;
   }
 
   get alternativesMinCount(): number {
@@ -63,10 +63,10 @@ export class FirstStepComponent implements OnInit {
   }
 
   get vicorV(): number {
-    if (isNaN(this.dataStoreService.vicorV)) {
+    if (isNaN(this.dataStoreService.currentDataset.vicorV)) {
       return null;
     }
-    return this.dataStoreService.vicorV;
+    return this.dataStoreService.currentDataset.vicorV;
   }
 
   addAlternative() {
@@ -88,7 +88,7 @@ export class FirstStepComponent implements OnInit {
   }
 
   deleteAlternative(alternativeId: number) {
-    this.dataStoreService.alternatives = this.alternatives.filter(x => x.id !== alternativeId);
+    this.dataStoreService.currentDataset.alternatives = this.alternatives.filter(x => x.id !== alternativeId);
   }
 
   isVValid() {
@@ -99,7 +99,7 @@ export class FirstStepComponent implements OnInit {
       return false;
     }
 
-    this.dataStoreService.vicorV = +this.vForm.get('v').value;
+    this.dataStoreService.currentDataset.vicorV = +this.vForm.get('v').value;
     return true;
   }
 
@@ -118,12 +118,14 @@ export class FirstStepComponent implements OnInit {
 
   goToSpecMethod() {
     if (this.isVValid()) {
+      this.dataStoreService.currentDataset.criterions = this.criterions.filter(x => x.active);
       this.router.navigate(['/spec-method']);
     }
   }
 
   goToFill() {
     if (this.isVValid() && this.isWeightsValid()) {
+      this.dataStoreService.currentDataset.criterions = this.criterions.filter(x => x.active);
       this.router.navigate(['/fill']);
     }
   }

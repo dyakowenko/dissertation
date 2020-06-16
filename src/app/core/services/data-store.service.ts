@@ -1,20 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Criterion, IdValue } from 'src/app/shared/models/criterion.model';
 import { Alternative } from 'src/app/shared/models/alternative.model';
+import { Dataset } from 'src/app/shared/models/dataset.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataStoreService {
 
+  constructor() {
+    this.criterionsList = this.criterions;
+  }
+
+  datasets: Dataset[] = [];
+  currentDataset = new Dataset();
+
   alternativesMinCount = 2;
   criterionsMinCount = 2;
-  vicorV: number;
-  vicorResult: IdValue[] = [];
-  topsisResult: IdValue[] = [];
-
-  alternatives: Alternative[] = [];
-  criterions: Criterion[] = [
+  criterionsList: Criterion[] = [];
+  readonly criterions: Criterion[] = [
     {
       id: 1,
       name: 'Сроки доставки (дней)',

@@ -16,6 +16,8 @@ import { FirstStepComponent } from './components/first-step/first-step.component
 import { SpecMethodComponent } from './components/spec-method/spec-method.component';
 import { SecondStepComponent } from './components/second-step/second-step.component';
 import { ResultComponent } from './components/result/result.component';
+import { AngularFirestore } from '@angular/fire/firestore';
+import { DatasetsComponent } from './components/datasets/datasets.component';
 
 const FIREBASE_CONFIG = {
   apiKey: 'AIzaSyBDsxJCI_m6ph8ZpR0HSEoOtgJRhLBiBNw',
@@ -34,7 +36,8 @@ const FIREBASE_CONFIG = {
     HomeComponent,
     SpecMethodComponent,
     SecondStepComponent,
-    ResultComponent
+    ResultComponent,
+    DatasetsComponent,
   ],
   imports: [
     BrowserModule,
@@ -67,7 +70,7 @@ const FIREBASE_CONFIG = {
       }
     })
   ],
-  providers: [],
+  providers: [AngularFirestore],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
