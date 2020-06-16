@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
 
   goToCalc() {
     this.dataStoreService.currentDataset = new Dataset();
-    this.dataStoreService.criterionsList =  [...this.dataStoreService.criterions];
+    this.dataStoreService.criterionsList = JSON.parse(JSON.stringify(this.dataStoreService.criterions));
     this.router.navigate(['/calc']);
   }
 

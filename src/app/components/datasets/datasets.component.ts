@@ -42,7 +42,7 @@ export class DatasetsComponent {
 
   chooseDataset(dataset: Dataset) {
     this.dataStoreService.currentDataset = dataset;
-    this.dataStoreService.criterionsList = [...this.dataStoreService.criterions];
+    this.dataStoreService.criterionsList = JSON.parse(JSON.stringify(this.dataStoreService.criterions));
     dataset.criterions.forEach(x => {
       const idx = this.dataStoreService.criterionsList.findIndex(y => y.id === x.id);
       if (idx !== -1) {
