@@ -43,6 +43,16 @@
             <tr *ngFor="let criterion of criterions; let i = index" [ngClass]="{ 'tr-diff-back': i % 2 === 0 }">
                 <td class="first-step-container__item-option-td-name">
                     {{ i + 1 }}. {{ criterion.name }}
+
+                    <div class="first-step-container__crit-hint" *ngIf="criterion.hint">
+                        <fa-icon
+                            class="first-step-container__alternatives-list-item-delete-btn"
+                            [icon]="faExclamationCircle"
+                        ></fa-icon>
+                        <div class="first-step-container__crit-hint-text">
+                            {{ criterion.hint }}
+                        </div>
+                    </div>
                 </td>
                 <td class="first-step-container__item-option-td-checkbox">
                     <div class="checkbox">
@@ -95,15 +105,6 @@
                 </td>
             </tr>
         </table>
-    </div>
-
-    <div class="first-step-container__default-block" [formGroup]="vForm">
-        <input
-            type="number"
-            autocomplete="off"
-            formControlName="v"
-            placeholder="v для викора"
-        >
     </div>
 
     <div>Вместо ввода весов вы можете использовать <a (click)="$event.preventDefault(); goToSpecMethod()">специальный метод</a></div>

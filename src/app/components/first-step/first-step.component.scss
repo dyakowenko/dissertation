@@ -15,6 +15,28 @@
         background-color: white;
     }
 
+    &__crit-hint {
+        display: inline-block;
+        position: relative;
+        &:hover {
+            .first-step-container__crit-hint-text {
+                display: block;
+            }
+        }
+    }
+
+    &__crit-hint-text {
+        position: absolute;
+        background: #777777;
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        z-index: 1;
+        box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.15);
+        min-width: 250px;
+        color: white;
+        display: none;
+    }
+
     &__default-block-title {
         text-align: center;
         margin-bottom: 1rem;

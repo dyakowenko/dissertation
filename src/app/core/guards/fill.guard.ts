@@ -21,9 +21,8 @@ export class FillGuard implements CanActivate {
       x.state !== undefined &&
       x.weight !== undefined
     ).length >= this.dataStoreService.criterionsMinCount;
-    const vicorVIsValid = this.dataStoreService.currentDataset.vicorV !== undefined && this.dataStoreService.currentDataset.vicorV >= 0 && this.dataStoreService.currentDataset.vicorV <= 1;
 
-    if (alternativesValid && criterionsValid && vicorVIsValid) {
+    if (alternativesValid && criterionsValid) {
       return true;
     }
 
@@ -39,11 +38,6 @@ export class FillGuard implements CanActivate {
     if (!alternativesValid) {
       this.notifierService.notify('warning', `
         Минимальное количество альтернатив: ${this.dataStoreService.alternativesMinCount}
-      `);
-    }
-    if (!vicorVIsValid) {
-      this.notifierService.notify('warning', `
-        Необходимо ввести значение v для метода VICOR от 0 до 1
       `);
     }
 

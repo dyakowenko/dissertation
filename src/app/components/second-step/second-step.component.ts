@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DataStoreService } from 'src/app/core/services/data-store.service';
 import { Criterion } from 'src/app/shared/models/criterion.model';
 import { Alternative, Relation } from 'src/app/shared/models/alternative.model';
@@ -7,6 +7,8 @@ import { CriterionState } from 'src/app/shared/enums/criterion-state.enum';
 import { Router } from '@angular/router';
 import { Dataset } from 'src/app/shared/models/dataset.model';
 import { FirebaseService } from 'src/app/core/services/firebase.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 export class IdValue {
   criterionId?: number;
@@ -19,7 +21,10 @@ export class IdValue {
   templateUrl: './second-step.component.html',
   styleUrls: ['./second-step.component.scss']
 })
-export class SecondStepComponent implements OnInit {
+export class SecondStepComponent implements OnInit, OnDestroy {
+
+  vForm: FormGroup;
+  subscriptions: Subscription[] = [];
 
   constructor(
     private dataStoreService: DataStoreService,
@@ -30,6 +35,11 @@ export class SecondStepComponent implements OnInit {
 
   ngOnInit() {
     this.initRelationsObjects();
+    this.initVForm();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(x => x.unsubscribe());
   }
 
   get alternatives(): Alternative[] {
@@ -38,6 +48,68 @@ export class SecondStepComponent implements OnInit {
 
   get criterions(): Criterion[] {
     return this.dataStoreService.currentDataset.criterions;
+  }
+
+  initVForm() {
+    this.vForm = new FormGroup({
+      v: new FormControl(this.dataStoreService.currentDataset.vicorV, [
+        Validators.required,
+        Validators.min(0),
+        Validators.max(1),
+      ]),
+    });
+
+    this.subscriptions.push(
+      this.vForm.get('v').valueChanges
+        .subscribe(value => {
+          value = this.cutBlockedChars(value, '1234567890.,');
+          if (!isNaN(+value)) {
+            if (value > 1) {
+              this.vForm.get('v').setValue(1, { emitEvent: false });
+            } else if (value < 0) {
+              this.vForm.get('v').setValue(0, { emitEvent: false });
+            } else {
+              this.vForm.get('v').setValue(value, { emitEvent: false });
+            }
+          } else {
+            this.vForm.get('v').setValue(value, { emitEvent: false });
+          }
+        })
+    );
+  }
+
+  cutBlockedChars(stringToTransform: string, acceptedChars: string): string {
+    let transformedString = '';
+    let haveDot = false;
+    if (stringToTransform) {
+      if (stringToTransform.trim().length) {
+        Object.values(stringToTransform).forEach((value: string) => {
+          if (acceptedChars.toLowerCase().indexOf(value.toLowerCase()) !== -1) {
+            if (value === ',' || value === '.') {
+              if (!haveDot && transformedString.length !== 0 && transformedString !== '1') {
+                transformedString += '.';
+              }
+              haveDot = true;
+            } else {
+              transformedString += value;
+            }
+          }
+        });
+      }
+    }
+    return transformedString;
+  }
+
+  isVInvalid() {
+    if (this.vForm.invalid) {
+      this.notifierService.notify('warning', `
+        Необходимо ввести значение v для метода VICOR от 0 до 1
+      `);
+      return true;
+    }
+
+    this.dataStoreService.currentDataset.vicorV = +this.vForm.get('v').value;
+    return false;
   }
 
   initRelationsObjects() {
@@ -71,9 +143,14 @@ export class SecondStepComponent implements OnInit {
     return alternative.relations.find(relation => relation.criterionId === criterion.id);
   }
 
+  goBack() {
+    this.dataStoreService.currentDataset.vicorV = +this.vForm.get('v').value;
+    this.router.navigate(['/calc']);
+  }
+
   goNextStep() {
     const isValid = !this.alternatives.some(x => x.relations.some(y => y.value === undefined || y.value === ''));
-    if (!isValid) {
+    if (!isValid || this.isVInvalid()) {
       this.notifierService.notify('warning', `
         Для продолжения необходимо заполнить все поля
       `);

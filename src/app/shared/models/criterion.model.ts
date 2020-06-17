@@ -9,6 +9,7 @@ export class Criterion {
     qualityList?: IdValue[] = [];
     weight?: number;
     relations?: IdValue[] = [];
+    hint?: string;
 }
 
 export class IdValue {

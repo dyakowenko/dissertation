@@ -25,7 +25,6 @@ export class AppComponent implements OnInit {
     this.firebaseService
       .getDatasets()
       .subscribe(data => {
-        console.log(123);
         this.dataStoreService.datasets = data.map(e => {
           const dataset = e.payload.doc.data() as Dataset;
           return {

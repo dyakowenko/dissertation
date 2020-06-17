@@ -36,8 +36,19 @@
         </tr>
     </table>
 
+    <div class="second-step-container__default-block" [formGroup]="vForm">
+        <div>
+            Введите v для вычислений по методу VICOR
+        </div>
+        <input
+            type="text"
+            autocomplete="off"
+            formControlName="v"
+        >
+    </div>
+
     <div class="btn-group">
-        <div class="default-button" [routerLink]="['/calc']">
+        <div class="default-button" (click)="goBack()">
             <span>Назад</span>
         </div>
 

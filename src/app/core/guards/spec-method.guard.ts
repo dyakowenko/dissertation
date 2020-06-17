@@ -20,9 +20,8 @@ export class SpecMethodGuard implements CanActivate {
       x.active &&
       x.state !== undefined
     ).length >= this.dataStoreService.criterionsMinCount;
-    const vicorVIsValid = this.dataStoreService.currentDataset.vicorV !== undefined && this.dataStoreService.currentDataset.vicorV >= 0 && this.dataStoreService.currentDataset.vicorV <= 1;
 
-    if (alternativesValid && criterionsValid && vicorVIsValid) {
+    if (alternativesValid && criterionsValid) {
       return true;
     }
 

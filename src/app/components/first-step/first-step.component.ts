@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Alternative } from 'src/app/shared/models/alternative.model';
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faTimesCircle, faExclamationCircle } from '@fortawesome/free-solid-svg-icons';
 import { Criterion } from 'src/app/shared/models/criterion.model';
 import { CriterionState } from 'src/app/shared/enums/criterion-state.enum';
 import { DataStoreService } from 'src/app/core/services/data-store.service';
@@ -17,9 +17,8 @@ export class FirstStepComponent implements OnInit {
 
   criterionState = CriterionState;
   addAlternativesForm: FormGroup;
-  vForm: FormGroup;
-
   faTimesCircle = faTimesCircle;
+  faExclamationCircle = faExclamationCircle;
 
   constructor(
     private dataStoreService: DataStoreService,
@@ -35,13 +34,6 @@ export class FirstStepComponent implements OnInit {
     this.addAlternativesForm = new FormGroup({
       name: new FormControl('', [
         Validators.required
-      ]),
-    });
-    this.vForm = new FormGroup({
-      v: new FormControl(this.dataStoreService.currentDataset.vicorV, [
-        Validators.required,
-        Validators.min(0),
-        Validators.max(1),
       ]),
     });
   }
@@ -60,13 +52,6 @@ export class FirstStepComponent implements OnInit {
 
   get criterionsMinCount(): number {
     return this.dataStoreService.criterionsMinCount;
-  }
-
-  get vicorV(): number {
-    if (isNaN(this.dataStoreService.currentDataset.vicorV)) {
-      return null;
-    }
-    return this.dataStoreService.currentDataset.vicorV;
   }
 
   addAlternative() {
@@ -91,18 +76,6 @@ export class FirstStepComponent implements OnInit {
     this.dataStoreService.currentDataset.alternatives = this.alternatives.filter(x => x.id !== alternativeId);
   }
 
-  isVValid() {
-    if (this.vForm.invalid) {
-      this.notifierService.notify('warning', `
-        Необходимо ввести значение v для метода VICOR от 0 до 1
-      `);
-      return false;
-    }
-
-    this.dataStoreService.currentDataset.vicorV = +this.vForm.get('v').value;
-    return true;
-  }
-
   isWeightsValid() {
     const criterions = this.criterions.filter(x => x.active);
     const invalidWeigths = criterions.some(x => x.weight > 1);
@@ -117,14 +90,12 @@ export class FirstStepComponent implements OnInit {
   }
 
   goToSpecMethod() {
-    if (this.isVValid()) {
-      this.dataStoreService.currentDataset.criterions = this.criterions.filter(x => x.active);
-      this.router.navigate(['/spec-method']);
-    }
+    this.dataStoreService.currentDataset.criterions = this.criterions.filter(x => x.active);
+    this.router.navigate(['/spec-method']);
   }
 
   goToFill() {
-    if (this.isVValid() && this.isWeightsValid()) {
+    if (this.isWeightsValid()) {
       this.dataStoreService.currentDataset.criterions = this.criterions.filter(x => x.active);
       this.router.navigate(['/fill']);
     }
