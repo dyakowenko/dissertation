@@ -32,9 +32,6 @@ export class SpecMethodGuard implements CanActivate {
       Минимальное количество альтернатив: ${this.dataStoreService.alternativesMinCount}.
       Минимальное количество выбранных критериев: ${this.dataStoreService.criterionsMinCount}
     `);
-    this.notifierService.notify('warning', `
-      Необходимо ввести значение v для метода VICOR от 0 до 1
-    `);
     this.router.navigateByUrl('/calc').then(_ => {
       return false;
     });
